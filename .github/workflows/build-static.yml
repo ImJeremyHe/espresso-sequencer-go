@@ -70,6 +70,9 @@ jobs:
         with:
           path: target/lib
 
+      - name: check files
+        run: ls -a target/lib
+
       - name: Release
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
