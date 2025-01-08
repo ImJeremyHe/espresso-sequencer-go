@@ -15,13 +15,14 @@ const baseURL = "https://github.com/ImJeremyHe/espresso-sequencer-go/releases/la
 
 func main() {
 	fileName := getFileName()
-	libFilePath := filepath.Join(targetDir, fileName)
+	fileDir := getFileDir()
+	libFilePath := filepath.Join(fileDir, fileName)
 
 	if _, err := os.Stat(libFilePath); err == nil {
 		return
 	}
 
-	if err := os.MkdirAll(targetDir, 0755); err != nil {
+	if err := os.MkdirAll(fileDir, 0755); err != nil {
 		fmt.Printf("Failed to create target directory: %s\n", err)
 		os.Exit(1)
 	}
@@ -65,4 +66,13 @@ func getFileName() string {
 	}
 
 	return fmt.Sprintf("libespresso_crypto_helper-%s.a", fileName)
+}
+
+func getFileDir() string {
+	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
+	if err != nil {
+		panic(err)
+	}
+
+	return filepath.Join(dir, targetDir)
 }
