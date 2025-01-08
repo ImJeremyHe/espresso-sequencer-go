@@ -5,6 +5,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"path"
 	"path/filepath"
 	"runtime"
 )
@@ -69,10 +70,10 @@ func getFileName() string {
 }
 
 func getFileDir() string {
-	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
-	if err != nil {
-		panic(err)
+	_, filename, _, ok := runtime.Caller(0)
+	if !ok {
+		panic("No caller information")
 	}
 
-	return filepath.Join(dir, targetDir)
+	return filepath.Join(path.Dir(filename), targetDir)
 }
